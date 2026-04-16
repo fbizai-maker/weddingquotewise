@@ -37,7 +37,10 @@
     font-style: normal;
   }
   @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap');
-    body { font-family: 'DM Sans', system-ui, sans-serif; background-color: #faf7f2; }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { overflow-x: hidden; }
+    body { font-family: 'DM Sans', system-ui, sans-serif; background-color: #faf7f2; overflow-x: hidden; width: 100%; }
+    .app-shell { width: 100%; max-width: 100%; overflow-x: hidden; background-color: #faf7f2; }
     @media (min-width: 768px) {
       body { background-color: #ede9e0; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; }
       .app-shell { max-width: 780px; width: 100%; min-height: 100vh; box-shadow: 0 4px 60px rgba(0,0,0,0.1); }
@@ -276,7 +279,7 @@
     }
     @media (max-width: 640px) {
       .visual-grid {
-        grid-template-columns: repeat(3, 280px);
+        grid-template-columns: 1fr;
       }
     }
     .context-highlight {
@@ -290,18 +293,23 @@
     .landing-hero {
       background:
         linear-gradient(to bottom, rgba(0,0,0,0.12) 0%, rgba(0,0,0,0.05) 35%, rgba(0,0,0,0.62) 100%),
-        url('https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?w=1400&q=90&auto=format&fit=crop&crop=center') center 55%/cover no-repeat;
-      padding: 0 1.25rem 2.5rem;
+        url('https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?w=1400&q=90&auto=format&fit=crop&crop=center') center center / cover no-repeat;
+      padding: 0 1.25rem 2rem;
       position: relative;
       overflow: hidden;
-      height: clamp(400px, 80vw, 520px);
+      height: clamp(380px, 85vw, 520px);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: flex-end;
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
     }
     .landing-hero::before { display:none; }
     .landing-hero::after  { display:none; }
+    /* Eyebrow — hidden on mobile, shown on tablet+ */
+    .hero-eyebrow-wrap { display: none; }
     .hero-eyebrow {
       display: inline-flex; align-items: center;
       background: rgba(255,255,255,0.14);
@@ -314,7 +322,7 @@
     }
     .hero-title {
       font-family: 'Ovelion', 'Playfair Display', Georgia, serif;
-      font-size: clamp(1.55rem, 5.5vw, 2.1rem);
+      font-size: clamp(1.4rem, 7.5vw, 2.1rem);
       line-height: 1.08; font-weight: normal; color: #fff;
       width: 100%; letter-spacing: 0.02em;
       text-transform: uppercase;
@@ -322,28 +330,33 @@
     }
     .hero-title em { font-style: italic; color: #d4e0c4; font-weight: normal; }
     .hero-subtitle-main {
-      font-size: 0.98rem; color: #fff;
+      font-size: 0.95rem; color: #fff;
       line-height: 1.45; font-weight: 600; margin: 0 0 0.25rem;
       text-shadow: 0 1px 8px rgba(0,0,0,0.6), 0 2px 16px rgba(0,0,0,0.4);
     }
     .hero-subtitle-sub {
-      font-size: 0.8rem; color: rgba(255,255,255,0.78);
+      font-size: 0.78rem; color: rgba(255,255,255,0.78);
       line-height: 1.5; font-weight: 400; margin: 0;
       text-shadow: 0 1px 6px rgba(0,0,0,0.55);
     }
     .hero-cta {
       background: #9caa8c; color: white; border-radius: 999px;
-      padding: 0.9rem 2.25rem; font-size: 0.8rem; font-weight: 700;
+      padding: 0.85rem 2rem; font-size: 0.78rem; font-weight: 700;
       letter-spacing: 0.08em; text-transform: uppercase;
-      min-width: 200px; transition: all 0.2s; border: none; cursor: pointer;
-      display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+      white-space: nowrap;
+      min-width: 0; width: auto; transition: all 0.2s; border: none; cursor: pointer;
+      display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;
       box-shadow: 0 4px 24px rgba(0,0,0,0.32); touch-action: manipulation;
     }
     .hero-cta:hover { background: #b5c4a4; transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,0,0,0.38); }
+    /* Tablet+ */
     @media (min-width: 600px) {
+      .hero-eyebrow-wrap { display: flex; }
       .landing-hero { height: clamp(440px, 58vw, 540px); }
       .hero-title { font-size: clamp(1.8rem, 4.5vw, 2.3rem); }
+      .hero-cta { padding: 0.95rem 2.25rem; font-size: 0.82rem; }
     }
+    /* Desktop */
     @media (min-width: 768px) {
       .landing-hero { height: 520px; }
       .hero-title { font-size: 2.2rem; }
@@ -577,22 +590,22 @@
 
   <div class="flex-1">
     <!-- LANDING SCREEN -->
-    <div id="screen-landing" class="pb-10" style="display:block;">
+    <div id="screen-landing" class="pb-10" style="display:block;overflow-x:hidden;width:100%;max-width:100%;">
 
       <!-- HERO -->
       <div class="landing-hero anim-1">
-        <!-- Eyebrow — top -->
-        <div style="position:absolute;top:1.5rem;left:0;right:0;display:flex;justify-content:center;pointer-events:none;">
+        <!-- Eyebrow — hidden on mobile, shown tablet+ -->
+        <div class="hero-eyebrow-wrap" style="position:absolute;top:1.5rem;left:0;right:0;justify-content:center;pointer-events:none;">
           <div class="hero-eyebrow">
             <span data-i18n="landing.eyebrow">For couples who want clarity, not confusion</span>
           </div>
         </div>
-        <!-- Bottom text block with subtle scrim for legibility -->
-        <div style="text-align:center;width:100%;max-width:520px;margin:0 auto;padding:1.5rem 1rem 0;background:linear-gradient(to top,rgba(0,0,0,0.28) 0%,transparent 100%);border-radius:12px 12px 0 0;">
-          <h1 class="hero-title" style="margin-bottom:0.65rem;">
+        <!-- Bottom text block -->
+        <div style="text-align:center;width:100%;max-width:520px;margin:0 auto;padding:1.25rem 0.5rem 0;background:linear-gradient(to top,rgba(0,0,0,0.28) 0%,transparent 100%);border-radius:12px 12px 0 0;">
+          <h1 class="hero-title" style="margin-bottom:0.6rem;">
             <span data-i18n="hero.title">Your dream wedding, without the overspend.</span>
           </h1>
-          <div style="margin-bottom:1.4rem;">
+          <div style="margin-bottom:1.25rem;">
             <p class="hero-subtitle-main" data-i18n="hero.subtitleLine1">Stop guessing on your vendor quotes.</p>
             <p class="hero-subtitle-sub" data-i18n="hero.subtitleLine2">Compare, spot hidden costs &amp; negotiate — in under a minute.</p>
           </div>
@@ -600,11 +613,11 @@
             <i class="fa-regular fa-heart"></i>
             <span data-i18n="hero.cta">Analyze my quotes</span>
           </button>
-          <p style="font-size:0.67rem;color:rgba(255,255,255,0.45);margin-top:0.6rem;text-shadow:0 1px 4px rgba(0,0,0,0.5);" data-i18n="landing.trust">No spreadsheets. No login. Just clarity ✨</p>
+          <p style="font-size:0.65rem;color:rgba(255,255,255,0.4);margin-top:0.55rem;text-shadow:0 1px 4px rgba(0,0,0,0.5);" data-i18n="landing.trust">No spreadsheets. No login. Just clarity ✨</p>
         </div>
       </div>
 
-      <div class="px-5 mt-7 space-y-6">
+      <div style="padding:1.5rem 1.25rem 0;display:flex;flex-direction:column;gap:1.5rem;max-width:100%;overflow-x:hidden;box-sizing:border-box;">
 
 
 
